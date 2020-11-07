@@ -83,7 +83,7 @@ WHERE e.party IN ('democrat','republican');
    
 
 UPDATE edata_county e
-SET flips = CASE WHEN x.percentage > 50 AND e.percentage < 50 THEN 1 ELSE 0 END 
+SET flips = CASE WHEN x.percentage > 50 AND e.percentage < 50 THEN 1 WHEN x.percentage < 50 AND e.percentage > 50 THEN 1 ELSE 0 END 
 FROM
 (SELECT year, state, county, party, percentage FROM edata_county)x 
 WHERE x.state = e.state 
@@ -116,7 +116,7 @@ group by
 
 
 UPDATE edata_state e
-SET flips = CASE WHEN x.percentage > 50 AND e.percentage < 50 THEN 1 ELSE 0 END 
+SET flips = CASE WHEN x.percentage > 50 AND e.percentage < 50 THEN 1 WHEN x.percentage < 50 AND e.percentage > 50 THEN 1 ELSE 0 END 
 FROM
 (SELECT year, state, party, percentage FROM edata_state)x 
 WHERE x.state = e.state 
