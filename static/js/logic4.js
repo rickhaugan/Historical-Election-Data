@@ -15,9 +15,48 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(myMap);
 
 // Use this link to get the geojson data.
-var link = "static/data/fips.geojson";
-var countyData = "http://127.0.0.1:5000/api/v1.0/county"
+let link = "static/data/fips.geojson";
+
+// Use this link to get the sql data.
+let countyData = "http://127.0.0.1:5000/api/v1.0/county"
 console.log(countyData)
+
+
+
+async function getUsers() {
+  let url = 'users.json';
+  try {
+      let res = await fetch(url);
+      return await res.json();
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+
+
+
+
+
+// let data = []
+
+// fetch(countyData)
+  // .then(function(data) {
+    // console.log(data)    
+    // })
+    // .then((data) => data.json()) // Transform the data into json
+    // console.log(data)  
+
+
+
+// fetch(countyData)
+//   .then(response => response.json())
+//   .then(data => console.log(response));
+  
+
+
+
+
 
 ////////////////////////////////////////
 //              To Do
