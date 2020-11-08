@@ -16,7 +16,16 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 // Use this link to get the geojson data.
 var link = "static/data/fips.geojson";
-var countyData = "http://127.0.0.1:5000/api/v1.0/county"
+let county_url = "http://127.0.0.1:5000/api/v1.0/county"
+
+// call FETCH with the URL
+fetch(county_url) // Call the fetch function passing the url of the API as a parameter
+.then(function() {
+    console.log(county_url)
+})
+.catch(function() {
+    console.log("Error-Giam")// This is where you run code if the server returns any errors
+});
 
 ////////////////////////////////////////
 //              To Do
