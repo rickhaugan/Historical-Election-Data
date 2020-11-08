@@ -1,7 +1,7 @@
 // Creating map object
 var myMap = L.map("map", {
-  center: [40.7128, -74.0059],
-  zoom: 11
+  center: [37.09, -95.71],
+  zoom: 5
 });
 
 // Adding tile layer
@@ -15,21 +15,20 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(myMap);
 
 // Use this link to get the geojson data.
-var link = "static/data/nyc.geojson";
+var link = "static/data/fips.geojson";
+var countyData = "http://127.0.0.1:5000/api/v1.0/county"
 
-// Function that will determine the color of a neighborhood based on the borough it belongs to
-function chooseColor(borough) {
-  switch (borough) {
-  case "Brooklyn":
-    return "yellow";
-  case "Bronx":
+////////////////////////////////////////
+//              To Do
+// Loop edata_county
+////////////////////////////////////////
+// Function that will determine the color of a county based on the Party
+function chooseColor(county) {
+  switch (county) {
+  case "democrat":
+    return "blue";
+  case "republican":
     return "red";
-  case "Manhattan":
-    return "orange";
-  case "Queens":
-    return "green";
-  case "Staten Island":
-    return "purple";
   default:
     return "black";
   }
@@ -44,7 +43,7 @@ d3.json(link, function(data) {
       return {
         color: "white",
         // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
-        fillColor: chooseColor(feature.properties.borough),
+        fillColor: chooseColor(feature.properties.county),
         fillOpacity: 0.5,
         weight: 1.5
       };
