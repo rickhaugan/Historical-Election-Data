@@ -18,48 +18,15 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 let link = "static/data/fips.geojson";
 
 // Use this link to get the sql data.
-let countyData = "http://127.0.0.1:5000/api/v1.0/county"
-console.log(countyData)
+let countyDataURL = "http://127.0.0.1:5000/api/v1.0/county"
+console.log(countyDataURL)
 
-// async function getUsers() {
-//   let url = 'users.json';
-//   try {
-//       let res = await fetch(url);
-//       return await res.json();
-//   } catch (error) {
-//       console.log(error);
-//   }
-// }
-// let data = []
-
-// fetch(countyData)
-//   .then(function(data) {
-//     console.log(data)    
-//     })
-//     .then((data) => data.json()) // Transform the data into json
-//     console.log(data)  
-
-// response.text().then(function (countyData) {
-//   console.log(countyData)
-//   // do something with the text response 
-// });
-
-
-fetch(countyData)
+fetch(countyDataURL)
 .then(response => response.text())
-.then((response) => {
-    console.log(response)
+.then((countyData) => {
+    console.log(countyData)
 })
 .catch(err => console.log(err))
-
-// fetch(countyData)
-//   .then(response => response.json())
-//   .then(data => console.log(response));
-  
-
-
-
-
 
 ////////////////////////////////////////
 //              To Do
@@ -76,17 +43,58 @@ function chooseColor(county) {
     return "black";
   }
 }
+// function fipsMatch(stateFips,countyFips){
+// // lloopps
+// for (let i = 0; i < countyData.length; i++) {
+//   if (countyData.countyfips == countyFips & countyData.statefips == stateFips & countyData.year == 2016)
+//   { if (countyData.percentage >50 & countyData.party == "republican")
+//     return(
+//       {
+//         color: "white",
+//         // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
+//         fillColor: "red",
+//         fillOpacity: 0.5,
+//         weight: 1.5})
+//       else {
+//         return({
+//         color: "white",
+//         fillColor: "blue",
+//         fillOpacity: 0.5,
+//         weight: 1.5})
+//         }
+//   }
+// compare who won countyData.percentage > 50
+
+
+// case wehn party = repub
+// return {
+// color: "white",
+// // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
+// fillColor: red ,
+// fillOpacity: 0.5,
+// weight: 1.5}
+
+// case wehn party = democ
+// return {
+// color: "white",
+// // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
+// fillColor: blue ,
+// fillOpacity: 0.5,
+// weight: 1.5}
+// }
 
 // Grabbing our GeoJSON data..
 d3.json(link, function(data) {
   // Creating a geoJSON layer with the retrieved data
   L.geoJson(data, {
     // Style each feature (in this case a neighborhood)
-    style: function(feature) {
+    style: function(feature){
+      // return 
+      //  fipsMatch(features.properties.state,features.properties.county)
       return {
         color: "white",
         // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
-        fillColor: chooseColor(feature.properties.county),
+        fillColor: "red",  //chooseColor(feature.properties.county),
         fillOpacity: 0.5,
         weight: 1.5
       };
