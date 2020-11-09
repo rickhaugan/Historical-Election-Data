@@ -21,33 +21,36 @@ let link = "static/data/fips.geojson";
 let countyData = "http://127.0.0.1:5000/api/v1.0/county"
 console.log(countyData)
 
-
-
-async function getUsers() {
-  let url = 'users.json';
-  try {
-      let res = await fetch(url);
-      return await res.json();
-  } catch (error) {
-      console.log(error);
-  }
-}
-
-
-
-
-
-
+// async function getUsers() {
+//   let url = 'users.json';
+//   try {
+//       let res = await fetch(url);
+//       return await res.json();
+//   } catch (error) {
+//       console.log(error);
+//   }
+// }
 // let data = []
 
 // fetch(countyData)
-  // .then(function(data) {
-    // console.log(data)    
-    // })
-    // .then((data) => data.json()) // Transform the data into json
-    // console.log(data)  
+//   .then(function(data) {
+//     console.log(data)    
+//     })
+//     .then((data) => data.json()) // Transform the data into json
+//     console.log(data)  
+
+// response.text().then(function (countyData) {
+//   console.log(countyData)
+//   // do something with the text response 
+// });
 
 
+fetch(countyData)
+.then(response => response.text())
+.then((response) => {
+    console.log(response)
+})
+.catch(err => console.log(err))
 
 // fetch(countyData)
 //   .then(response => response.json())
