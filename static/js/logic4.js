@@ -1,5 +1,5 @@
 // Creating map object
-var myMap = L.map("map", {
+let myMap = L.map("map", {
   center: [37.09, -95.71],
   zoom: 5
 });
@@ -15,8 +15,8 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(myMap);
 
 // Use this link to get the geojson data.
-let link = "static/data/fips.geojson";
-
+let countyLink = "static/data/countyfips.geojson";
+let stateLink = "static/data/statefips.geojson";
 // Use this link to get the sql data.
 let countyDataURL = "http://127.0.0.1:5000/api/v1.0/county"
 console.log(countyDataURL)
@@ -84,7 +84,7 @@ function chooseColor(county) {
 // }
 
 // Grabbing our GeoJSON data..
-d3.json(link, function(data) {
+d3.json(stateLink, function(data) {
   // Creating a geoJSON layer with the retrieved data
   L.geoJson(data, {
     // Style each feature (in this case a neighborhood)
