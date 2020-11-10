@@ -16,8 +16,9 @@ from flask_cors import cross_origin
 engine = create_engine('postgresql://postgres:'+sqlkey+'@localhost:5432/election_data')
 connection = engine.connect()
 
-county_sql = "select * from edata_county"
-state_sql = "select * from edata_state"
+county_sql = "select * from edata_county where state in ('Arizona', 'Florida', 'Michigan', 'North Carolina', 'Pennsylvania') and year = 2016"
+# county_sql = "select * from edata_county and year = 2016"
+state_sql = "select * from edata_state where state in ('Arizona', 'Florida', 'Michigan', 'North Carolina', 'Pennsylvania') and year = 2016"
 
 # reflect an existing database into a new model
 Base = automap_base()
