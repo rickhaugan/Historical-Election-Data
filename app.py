@@ -1,66 +1,80 @@
-import sqlalchemy
-import pandas as pd
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
+# import necessary libraries
+from models import create_classes
+import os
 from flask import (
     Flask,
     render_template,
     jsonify,
     request,
     redirect)
-from keys import sqlkey
-from sqlalchemy import and_
-from flask_cors import cross_origin
 
-engine = create_engine('postgresql://postgres:'+sqlkey+'@localhost:5432/election_data')
-connection = engine.connect()
-
-county_sql = "select * from edata_county where state in ('Arizona', 'Florida', 'Michigan', 'North Carolina', 'Pennsylvania') and year = 2016"
-# county_sql = "select * from edata_county and year = 2016"
-state_sql = "select * from edata_state where state in ('Arizona', 'Florida', 'Michigan', 'North Carolina', 'Pennsylvania') and year = 2016"
-
-# reflect an existing database into a new model
-Base = automap_base()
-# reflect the tables
-Base.prepare(engine, reflect=True)
-
-# print(engine.table_names)
-# Save reference to the table
-County = Base.classes.edata_county
-State = Base.classes.edata_state
-
+#################################################
+# Flask Setup
+#################################################
 app = Flask(__name__)
 
+#################################################
+# Database Setup
+#################################################
+
+from flask_sqlalchemy import SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"
+
+# Remove tracking modifications
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+Pet = create_classes(db)
+
+# create route that renders index.html template
 @app.route("/")
-@cross_origin()
-def welcome():
-    cnty = "/api/v1.0/county"
-    stt = "/api/v1.0/state"    
-    return (
-        f"""
-Choose County or State Endpoint <br>
-<a href='{cnty}'>{cnty}</a><br>
-<a href='{stt}'>{stt}</a><br>
-"""
-    )
+def home():
+    return render_template("index.html")
 
-@app.route("/api/v1.0/county")
-@cross_origin()
-def county_elections():
-    # Create our session (link) from Python to the DB
-    countyData = pd.read_sql(county_sql, connection)
-    county_data_dictionary = countyData.to_dict('records')
 
-    return jsonify(county_data_dictionary)
+# Query the database and send the jsonified results
+@app.route("/send", methods=["GET", "POST"])
+def send():
+    if request.method == "POST":
+        name = request.form["petName"]
+        lat = request.form["petLat"]
+        lon = request.form["petLon"]
 
-@app.route("/api/v1.0/state")
-@cross_origin()
-def state_elections():    
-    state_data = pd.read_sql(state_sql, connection)
-    state_data_dictionary = state_data.to_dict('records')
+        pet = Pet(name=name, lat=lat, lon=lon)
+        db.session.add(pet)
+        db.session.commit()
+        return redirect("/", code=302)
 
-    return jsonify(state_data_dictionary)
+    return render_template("form.html")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+@app.route("/api/pals")
+def pals():
+    results = db.session.query(Pet.name, Pet.lat, Pet.lon).all()
+
+    hover_text = [result[0] for result in results]
+    lat = [result[1] for result in results]
+    lon = [result[2] for result in results]
+
+    pet_data = [{
+        "type": "scattergeo",
+        "locationmode": "USA-states",
+        "lat": lat,
+        "lon": lon,
+        "text": hover_text,
+        "hoverinfo": "text",
+        "marker": {
+            "size": 50,
+            "line": {
+                "color": "rgb(8,8,8)",
+                "width": 1
+            },
+        }
+    }]
+
+    return jsonify(pet_data)
+
+
+if __name__ == "__main__":
+    app.run()
