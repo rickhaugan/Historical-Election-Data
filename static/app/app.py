@@ -32,7 +32,7 @@ State = Base.classes.edata_state
 
 app = Flask(__name__)
 
-@app.route("/")
+app.route("/")
 @cross_origin()
 def welcome():
     cnty = "/api/v1.0/county"

@@ -14,6 +14,10 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: API_KEY
 }).addTo(myMap);
 
+// d3.selectAll("#flipsButton").on("click", flipsMap())
+d3.selectAll("#stateButton").on("click", stateMap())
+// d3.selectAll("#countyButton").on("click", countyMap())
+
 function stateMap() {
 
   let countyLink = "static/data/countyfips.geojson";
@@ -93,18 +97,6 @@ function stateMap() {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-  
   function geoMapIt(countyData) {
     // Grabbing our GeoJSON data..
     d3.json(stateLink, function (data) {
@@ -148,9 +140,7 @@ function stateMap() {
             },
             // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
             click: function (event) {
-              myMap.fitBounds(event.target.getBounds({
-                zoom: 1
-              }));
+              myMap.fitBounds(event.target.getBounds());
             }
           });
           // Giving each feature a pop-up with information pertinent to it
@@ -160,21 +150,6 @@ function stateMap() {
       }).addTo(myMap);
     })
   }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   function flipsMap (){
@@ -306,22 +281,6 @@ function stateMap() {
 
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   function countyMap () {
 
     let countyLink = "static/data/countyfips.geojson";
@@ -427,6 +386,151 @@ function stateMap() {
         }).addTo(myMap);
       })
     }
+
+
+
+
+
+
+
+    function stateDataFunction (stateDataURL) {
+      fetch(stateDataURL)
+        .then(response => response.json())
+        .then((countyData) => {
+          console.log(stateData)
+          // console.log("firstlength", countyData[0])
+          // Need if statement where if overlay is clicked for state, then maps state
+          geoMapIt(stateData)
+        })
+        .catch(err => console.log(err))
+      }
+
+    function geoMapState(countyData) {
+      // Grabbing our GeoJSON data..
+      d3.json(stateLink, function (data) {
+        // Creating a geoJSON layer with the retrieved data
+        L.geoJson(data, {
+          // Style each feature (in this case a neighborhood)
+          style: function (feature) {
+            // return 
+            //  fipsMatch(features.properties.state,features.properties.county)
+            //{
+            if (feature.properties.STATE === "39" || feature.properties.STATE === "48" ) {
+            return fipsMatch(feature.properties.STATE, feature.properties.COUNTY,countyData)
+            }
+            else {
+            return {
+            color: "white",
+            // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
+            fillColor: "black",  //chooseColor(feature.properties.county),
+            fillOpacity: 0.5,
+            weight: 1.5
+            }}
+
+          },
+          // Called on each feature
+          onEachFeature: function (feature, layer) {
+            // Set mouse events to change map styling
+            layer.on({
+              // When a user's mouse touches a map feature, the mouseover event calls this function, that feature's opacity changes to 90% so that it stands out
+              mouseover: function (event) {
+                layer = event.target;
+                layer.setStyle({
+                  fillOpacity: 0.9
+                });
+              },
+              // When the cursor no longer hovers over a map feature - when the mouseout event occurs - the feature's opacity reverts back to 50%
+              mouseout: function (event) {
+                layer = event.target;
+                layer.setStyle({
+                  fillOpacity: 0.5
+                });
+              },
+              // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
+              click: function (event) {
+                myMap.fitBounds(event.target.getBounds());
+              }
+            });
+            // Giving each feature a pop-up with information pertinent to it
+            layer.bindPopup("<h1>" + feature.properties.neighborhood + "</h1> <hr> <h2>" + feature.properties.borough + "</h2>");
+
+          }
+        }).addTo(myMap);
+      })
+    }
+
+
+
+
+
+
+
+    function stateDataFunction (stateDataURL) {
+      fetch(countyDataURL)
+        .then(response => response.json())
+        .then((countyData) => {
+          console.log(countyData)
+          // console.log("firstlength", countyData[0])
+          // Need if statement where if overlay is clicked for state, then maps state
+          geoMapIt(countyData)
+        })
+        .catch(err => console.log(err))
+      }    
+
+    function geoMapFlip(countyData) {
+      // Grabbing our GeoJSON data..
+      d3.json(countyLink, function (data) {
+        // Creating a geoJSON layer with the retrieved data
+        L.geoJson(data, {
+          // Style each feature (in this case a neighborhood)
+          style: function (feature) {
+            // return 
+            //  fipsMatch(features.properties.state,features.properties.county)
+            //{
+            if (feature.properties.STATE === "39" || feature.properties.STATE === "48" ) {
+            return fipsMatch(feature.properties.STATE, feature.properties.COUNTY,countyData)
+            }
+            else {
+            return {
+            color: "white",
+            // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
+            fillColor: "black",  //chooseColor(feature.properties.county),
+            fillOpacity: 0.5,
+            weight: 1.5
+            }}
+
+          },
+          // Called on each feature
+          onEachFeature: function (feature, layer) {
+            // Set mouse events to change map styling
+            layer.on({
+              // When a user's mouse touches a map feature, the mouseover event calls this function, that feature's opacity changes to 90% so that it stands out
+              mouseover: function (event) {
+                layer = event.target;
+                layer.setStyle({
+                  fillOpacity: 0.9
+                });
+              },
+              // When the cursor no longer hovers over a map feature - when the mouseout event occurs - the feature's opacity reverts back to 50%
+              mouseout: function (event) {
+                layer = event.target;
+                layer.setStyle({
+                  fillOpacity: 0.5
+                });
+              },
+              // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
+              click: function (event) {
+                myMap.fitBounds(event.target.getBounds());
+              }
+            });
+            // Giving each feature a pop-up with information pertinent to it
+            layer.bindPopup("<h1>" + feature.properties.neighborhood + "</h1> <hr> <h2>" + feature.properties.borough + "</h2>");
+
+          }
+        }).addTo(myMap);
+      })
+    }
+
   }
 
   

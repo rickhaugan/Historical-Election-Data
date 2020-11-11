@@ -22,26 +22,78 @@ html {
   opacity: 0.7;
 }
 
-#stateButton {
+#reset {
   position: absolute;
-  top: 20px;
+  top: 440px;
   right: 20px;
   padding: 10px;
   z-index: 400;
+  background-color: rgb(177, 173, 173); /* Green */
+  border: TRUE;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  width: 120px;
+}
+
+#stateButton {
+  position: absolute;
+  top: 500px;
+  right: 20px;
+  padding: 10px;
+  z-index: 400;
+  background-color: #4CAF50; /* Green */
+  border: TRUE;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  width: 120px;
 }
 
 #countyButton {
   position: absolute;
-  top: 80px;
+  top: 560px;
   right: 20px;
   padding: 10px;
   z-index: 400;
+  background-color: #4CAF50; /* Green */
+  border: TRUE;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  width: 120px;
 }
 
 #flipsButton {
   position: absolute;
-  top: 140px;
+  top: 620px;
   right: 20px;
   padding: 10px;
   z-index: 400;
+  background-color: #4CAF50; /* Green */
+  border: TRUE;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  width: 120px;
 }
