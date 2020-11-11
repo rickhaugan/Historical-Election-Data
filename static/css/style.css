@@ -21,3 +21,27 @@ html {
   margin-right: 8px;
   opacity: 0.7;
 }
+
+#stateButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  z-index: 400;
+}
+
+#countyButton {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  padding: 10px;
+  z-index: 400;
+}
+
+#flipsButton {
+  position: absolute;
+  top: 140px;
+  right: 20px;
+  padding: 10px;
+  z-index: 400;
+}

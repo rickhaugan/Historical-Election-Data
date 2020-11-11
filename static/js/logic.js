@@ -14,13 +14,11 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: API_KEY
 }).addTo(myMap);
 
-//whatever seleciton calls the next fuctnion
-// stateMap()
-// flipsMap()
-countyMap()
+// d3.selectAll("#flipsButton").on("click", flipsMap())
+d3.selectAll("#stateButton").on("click", stateMap())
+// d3.selectAll("#countyButton").on("click", countyMap())
 
 function stateMap() {
-
 
   let countyLink = "static/data/countyfips.geojson";
   let stateLink = "static/data/statefips.geojson";
@@ -171,10 +169,7 @@ function stateMap() {
       })
       .catch(err => console.log(err))
 
-
     function fipsMatch(stateFips, countyFips,countyData) {
-
-
       console.log("county data length", countyData.length)
 
       for (let i = 0; i < countyData.length; i++) {
