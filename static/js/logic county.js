@@ -39,50 +39,26 @@ function fipsMatch(stateFips, countyFips,countyData) {
   for (let i = 0; i < countyData.length; i++) {
     console.log("county", i, countyData.length)
     if (countyData[i].countyfips === countyFips && countyData[i].statefips === stateFips ) {
-      if (countyData[i].percentage >= 50 & countyData[i].party == "republican" & countyData[i].flips === 0) {
+      if (countyData[i].percentage >= 50 & countyData[i].party == "republican") {
         console.log("party",countyData[i].party)
         console.log("percentage",countyData[i].percentage)
-        console.log("flips",countyData[i].flips)
         return (
           {
-            color: "black",
-            fillColor: "black",
+            color: "white",
+            fillColor: "red",
             fillOpacity: 0.5,
             weight: 1.5
           })}
-      if (countyData[i].percentage >= 50 & countyData[i].party == "republican" & countyData[i].flips === 1) {
-        console.log("party",countyData[i].party)
-        console.log("percentage",countyData[i].percentage)
-        console.log("flips",countyData[i].flips)
-        return (
-          {
-          color: "black",
-          fillColor: "red",
-          fillOpacity: 0.5,
-          weight: 1.5
-          })}
-      if (countyData[i].percentage >= 50 & countyData[i].party == "democrat" & countyData[i].flips === 0) {
-        console.log("party",countyData[i].party)
-        console.log("percentage",countyData[i].percentage)
-        console.log("flips",countyData[i].flips)
-        return (
-          {
-          color: "black",
-          fillColor: "black",
-          fillOpacity: 0.5,
-          weight: 1.5
-          })}    
-      if (countyData[i].percentage >= 50 & countyData[i].party == "democrat" & countyData[i].flips === 1) {
-        console.log("party",countyData[i].party)
-        console.log("percentage",countyData[i].percentage)
-        console.log("flips",countyData[i].flips)
-        return (
-          {
-          color: "black",
+      if (countyData[i].percentage >= 50 & countyData[i].party == "democrat") {
+        // console.log("party",countyData[i].party)
+        // console.log("percentage",countyData[i].percentage)
+        return ({
+          color: "white",
           fillColor: "blue",
           fillOpacity: 0.5,
           weight: 1.5
-          })}
+        })
+      }
     }
   }
 }
@@ -137,6 +113,150 @@ function geoMapIt(countyData) {
         // Giving each feature a pop-up with information pertinent to it
         // layer.bindPopup("<h1>" + feature.properties.PARTY + "</h1> <hr> <h2>" + feature.properties.PERCENTAGE + "</h2>");
         layer.bindPopup("<h1>" + feature.properties.NAME + "</h1>");
+      }
+    }).addTo(myMap);
+  })
+}
+
+
+
+
+
+
+
+function stateDataFunction (stateDataURL) {
+  fetch(stateDataURL)
+    .then(response => response.json())
+    .then((countyData) => {
+      console.log(stateData)
+      // console.log("firstlength", countyData[0])
+      // Need if statement where if overlay is clicked for state, then maps state
+      geoMapIt(stateData)
+    })
+    .catch(err => console.log(err))
+  }
+
+function geoMapState(countyData) {
+  // Grabbing our GeoJSON data..
+  d3.json(stateLink, function (data) {
+    // Creating a geoJSON layer with the retrieved data
+    L.geoJson(data, {
+      // Style each feature (in this case a neighborhood)
+      style: function (feature) {
+        // return 
+        //  fipsMatch(features.properties.state,features.properties.county)
+        //{
+        if (feature.properties.STATE === "39" || feature.properties.STATE === "48" ) {
+        return fipsMatch(feature.properties.STATE, feature.properties.COUNTY,countyData)
+        }
+        else {
+        return {
+        color: "white",
+        // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
+        fillColor: "black",  //chooseColor(feature.properties.county),
+        fillOpacity: 0.5,
+        weight: 1.5
+        }}
+       
+      },
+      // Called on each feature
+      onEachFeature: function (feature, layer) {
+        // Set mouse events to change map styling
+        layer.on({
+          // When a user's mouse touches a map feature, the mouseover event calls this function, that feature's opacity changes to 90% so that it stands out
+          mouseover: function (event) {
+            layer = event.target;
+            layer.setStyle({
+              fillOpacity: 0.9
+            });
+          },
+          // When the cursor no longer hovers over a map feature - when the mouseout event occurs - the feature's opacity reverts back to 50%
+          mouseout: function (event) {
+            layer = event.target;
+            layer.setStyle({
+              fillOpacity: 0.5
+            });
+          },
+          // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
+          click: function (event) {
+            myMap.fitBounds(event.target.getBounds());
+          }
+        });
+        // Giving each feature a pop-up with information pertinent to it
+        layer.bindPopup("<h1>" + feature.properties.neighborhood + "</h1> <hr> <h2>" + feature.properties.borough + "</h2>");
+
+      }
+    }).addTo(myMap);
+  })
+}
+
+
+
+
+
+
+
+function stateDataFunction (stateDataURL) {
+  fetch(countyDataURL)
+    .then(response => response.json())
+    .then((countyData) => {
+      console.log(countyData)
+      // console.log("firstlength", countyData[0])
+      // Need if statement where if overlay is clicked for state, then maps state
+      geoMapIt(countyData)
+    })
+    .catch(err => console.log(err))
+  }    
+
+function geoMapFlip(countyData) {
+  // Grabbing our GeoJSON data..
+  d3.json(countyLink, function (data) {
+    // Creating a geoJSON layer with the retrieved data
+    L.geoJson(data, {
+      // Style each feature (in this case a neighborhood)
+      style: function (feature) {
+        // return 
+        //  fipsMatch(features.properties.state,features.properties.county)
+        //{
+        if (feature.properties.STATE === "39" || feature.properties.STATE === "48" ) {
+        return fipsMatch(feature.properties.STATE, feature.properties.COUNTY,countyData)
+        }
+        else {
+        return {
+        color: "white",
+        // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
+        fillColor: "black",  //chooseColor(feature.properties.county),
+        fillOpacity: 0.5,
+        weight: 1.5
+        }}
+       
+      },
+      // Called on each feature
+      onEachFeature: function (feature, layer) {
+        // Set mouse events to change map styling
+        layer.on({
+          // When a user's mouse touches a map feature, the mouseover event calls this function, that feature's opacity changes to 90% so that it stands out
+          mouseover: function (event) {
+            layer = event.target;
+            layer.setStyle({
+              fillOpacity: 0.9
+            });
+          },
+          // When the cursor no longer hovers over a map feature - when the mouseout event occurs - the feature's opacity reverts back to 50%
+          mouseout: function (event) {
+            layer = event.target;
+            layer.setStyle({
+              fillOpacity: 0.5
+            });
+          },
+          // When a feature (neighborhood) is clicked, it is enlarged to fit the screen
+          click: function (event) {
+            myMap.fitBounds(event.target.getBounds());
+          }
+        });
+        // Giving each feature a pop-up with information pertinent to it
+        layer.bindPopup("<h1>" + feature.properties.neighborhood + "</h1> <hr> <h2>" + feature.properties.borough + "</h2>");
+
       }
     }).addTo(myMap);
   })

@@ -55,6 +55,7 @@ def county_elections():
     return jsonify(county_data_dictionary)
 
 @app.route("/api/v1.0/state")
+@cross_origin()
 def state_elections():    
     state_data = pd.read_sql(state_sql, connection)
     state_data_dictionary = state_data.to_dict('records')

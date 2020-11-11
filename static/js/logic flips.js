@@ -45,7 +45,7 @@ function fipsMatch(stateFips, countyFips,countyData) {
         console.log("flips",countyData[i].flips)
         return (
           {
-            color: "white",
+            color: "black",
             fillColor: "black",
             fillOpacity: 0.5,
             weight: 1.5
@@ -56,7 +56,7 @@ function fipsMatch(stateFips, countyFips,countyData) {
         console.log("flips",countyData[i].flips)
         return (
           {
-          color: "white",
+          color: "black",
           fillColor: "red",
           fillOpacity: 0.5,
           weight: 1.5
@@ -67,7 +67,7 @@ function fipsMatch(stateFips, countyFips,countyData) {
         console.log("flips",countyData[i].flips)
         return (
           {
-          color: "white",
+          color: "black",
           fillColor: "black",
           fillOpacity: 0.5,
           weight: 1.5
@@ -78,7 +78,7 @@ function fipsMatch(stateFips, countyFips,countyData) {
         console.log("flips",countyData[i].flips)
         return (
           {
-          color: "white",
+          color: "black",
           fillColor: "blue",
           fillOpacity: 0.5,
           weight: 1.5
