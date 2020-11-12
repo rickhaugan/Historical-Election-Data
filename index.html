@@ -20,10 +20,16 @@
 
     <!-- map div -->
     <div id="map"></div>      
-      <button type=“reset” id="reset">RESET</button>
-      <button id="stateButton">STATE</button>
-      <script>
-      
+      <button id="reset">RESET</button>
+      <script>      
+        document.getElementById("reset").onclick = function() {window.location.reload()()};        
+        // function resetMap(){          
+        //   document.getElementById("reset").innerHTML = resetMap();
+        // }
+
+        </script>
+      <button id="stateButton">STATE</button>      
+      <script>      
         document.getElementById("stateButton").onclick = function() {stateMap()()};        
         function stateMap(){          
           document.getElementById("stateButton").innerHTML = stateMap();

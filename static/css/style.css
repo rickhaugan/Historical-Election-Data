@@ -24,7 +24,7 @@ html {
 
 #reset {
   position: absolute;
-  top: 440px;
+  top: 380px;
   right: 20px;
   padding: 10px;
   z-index: 400;
@@ -43,7 +43,7 @@ html {
 
 #stateButton {
   position: absolute;
-  top: 500px;
+  top: 440px;
   right: 20px;
   padding: 10px;
   z-index: 400;
@@ -62,7 +62,7 @@ html {
 
 #countyButton {
   position: absolute;
-  top: 560px;
+  top: 500px;
   right: 20px;
   padding: 10px;
   z-index: 400;
@@ -81,7 +81,7 @@ html {
 
 #flipsButton {
   position: absolute;
-  top: 620px;
+  top: 560px;
   right: 20px;
   padding: 10px;
   z-index: 400;

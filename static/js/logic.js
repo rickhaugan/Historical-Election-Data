@@ -98,12 +98,6 @@ function stateMap() {
 
 
 
-
-
-
-
-
-
   
   function geoMapIt(countyData) {
     // Grabbing our GeoJSON data..
